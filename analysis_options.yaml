@@ -17,6 +17,9 @@ analyzer:
     avoid_positional_boolean_parameters: error
     unnecessary_await_in_return: error
     invalid_use_of_protected_member: error
+  exclude:
+    - '*/**/*.g.dart'
+    - '*/**/*.config.dart'
 
 
 linter:
