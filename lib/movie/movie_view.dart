@@ -16,9 +16,25 @@ class MovieView extends StatefulWidget {
 }
 
 class _MovieViewState extends State<MovieView> {
+  final ScrollController _scrollController = ScrollController();
+
   Widget _movieBuilder(BuildContext context, int index) {
-    final Movie movie = context.read<MovieState>().moviesData.results[index];
+    final Movie movie = context.read<MovieState>().movies[index];
     return MovieItem(movie: movie);
+  }
+
+  void _loadNewProductsOnLastPage() {
+    final double currentPosition = _scrollController.offset;
+    final double maxPosition = _scrollController.position.maxScrollExtent;
+    if (maxPosition - currentPosition < 300) {
+      context.read<MovieState>().loadNextPage();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_loadNewProductsOnLastPage);
   }
 
   @override
@@ -43,17 +59,25 @@ class _MovieViewState extends State<MovieView> {
 
     return Consumer<MovieState>(
       builder: (BuildContext context, MovieState state, Widget? child) {
+        if (state.moviesCount == 0 && state.isLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         return Padding(
           padding: const EdgeInsets.all(8),
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              childAspectRatio: 3 / 4,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
+          child: Scrollbar(
+            child: GridView.builder(
+              controller: _scrollController,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: 3 / 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemBuilder: _movieBuilder,
+              itemCount: state.moviesCount,
             ),
-            itemBuilder: _movieBuilder,
-            itemCount: state.moviesCount,
           ),
         );
       },

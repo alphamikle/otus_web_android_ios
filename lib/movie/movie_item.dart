@@ -39,7 +39,7 @@ class MovieItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               child: Text(
                 movie.overview,
                 style: TextStyle(color: textColor),

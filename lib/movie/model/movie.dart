@@ -4,6 +4,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'movie.g.dart';
 
+String backdropFromJson(String? url) {
+  return url ?? 'https://via.placeholder.com/500x280';
+}
+
 @immutable
 @CopyWith()
 @JsonSerializable()
@@ -21,7 +25,7 @@ class Movie {
 
   final String title;
 
-  @JsonKey(name: 'backdrop_path')
+  @JsonKey(name: 'backdrop_path', fromJson: backdropFromJson)
   final String imageUrl;
 
   @JsonKey(name: 'vote_average')

@@ -21,7 +21,12 @@ class MovieConfig {
   @JsonKey(name: 'backdrop_sizes')
   final List<String> sizes;
 
-  String generateSmallUrl(String imageUrl) => '${url}w500$imageUrl';
+  String generateSmallUrl(String imageUrl) {
+    if (imageUrl.contains('https://via.placeholder.com')) {
+      return imageUrl;
+    }
+    return '${url}w300$imageUrl';
+  }
 }
 
 @immutable

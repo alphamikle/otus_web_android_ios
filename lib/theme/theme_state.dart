@@ -17,6 +17,14 @@ class ThemeState with ChangeNotifier {
     _buildTheme();
   }
 
+  void toggleBrightness() {
+    if (_brightness == Brightness.dark) {
+      setBrightness(Brightness.light);
+    } else {
+      setBrightness(Brightness.dark);
+    }
+  }
+
   void setScheme(FlexScheme scheme) {
     _scheme = scheme;
     _buildTheme();
